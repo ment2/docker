@@ -1,4 +1,5 @@
 ```
+Ставим docker-compose-plugin
 root@Ubuntu:/home/docker# sudo apt-get install docker-compose-plugin
 Reading package lists... Done
 Building dependency tree... Done
@@ -38,7 +39,8 @@ root@Ubuntu:/home/docker# docker build -t custom-nginx .
  => => exporting layers                                                    0.0s
  => => writing image sha256:61cc4dc171cd72169fb9425c6d547b277ec813194e23b  0.0s
  => => naming to docker.io/library/custom-nginx                            0.0s
- 
+
+Запускаем контейнер
 root@Ubuntu:/home/docker# docker run -p 80:80 custom-nginx
 /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
 /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
@@ -50,4 +52,28 @@ root@Ubuntu:/home/docker# docker run -p 80:80 custom-nginx
 /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
 /docker-entrypoint.sh: Configuration complete; ready for start up
 172.17.0.1 - - [12/Jan/2024:13:39:47 +0000] "GET / HTTP/1.1" 200 181 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:121.0) Gecko/20100101 Firefox/121.0"
+
+
+Определите разницу между контейнером и образом.
+- Образы используются для создания контейнеров. Образы являются шаблонами, на основе которых можно создавать и запускать несколько контейнеров. Контейнеры представляют собой рабочие экземпляры образов и обеспечивают изоляцию приложений и их зависимостей.
+Контейнеры:
+root@Ubuntu:/home/docker# docker ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED              STATUS                      PORTS                NAMES
+33f734b0ec9d   custom-nginx   "/docker-entrypoint.…"   About a minute ago   Up About a minute           0.0.0.0:80->80/tcp   peaceful_sutherland
+6bb4d89e3e72   custom-nginx   "/docker-entrypoint.…"   24 minutes ago       Exited (0) 23 minutes ago                        romantic_ellis
+977a72d122db   622efcc3b173   "/docker-entrypoint.…"   26 minutes ago       Exited (0) 26 minutes ago                        sweet_brahmagupta
+a80ad571356a   61cc4dc171cd   "/docker-entrypoint.…"   35 minutes ago       Exited (0) 29 minutes ago                        interesting_banzai
+b7c5e13edb81   hello-world    "/hello"                 41 minutes ago       Exited (0) 41 minutes ago                        dazzling_edison
+
+Образы:
+root@Ubuntu:/home/docker# docker image list
+REPOSITORY     TAG       IMAGE ID       CREATED          SIZE
+custom-nginx   latest    4589542fc790   23 minutes ago   42.6MB
+<none>         <none>    622efcc3b173   26 minutes ago   42.6MB
+<none>         <none>    61cc4dc171cd   35 minutes ago   42.6MB
+hello-world    latest    d2c94e258dcb   8 months ago     13.3kB
+
+
+Можно ли в контейнере собрать ядро?
+- Да.
 ```
